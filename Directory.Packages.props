@@ -30,7 +30,7 @@
     <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.13.1" />
     <!-- Worker / Messaging -->
     <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.18.4" />
-    <PackageVersion Include="Aspire.Azure.Messaging.ServiceBus" Version="9.3.0" />
+    <PackageVersion Include="Aspire.Azure.Messaging.ServiceBus" Version="13.2.0" />
     <PackageVersion Include="Aspire.Hosting.Azure.ServiceBus" Version="13.1.2" />
     <!-- Testing -->
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
