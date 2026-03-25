@@ -2,7 +2,7 @@
 
 A production-grade, multi-tenant SaaS backend built on .NET 10 — designed as a portfolio project to demonstrate senior-level engineering across distributed systems, domain-driven design, and clean architecture.
 
-The domain: a platform for managing automated background jobs (scheduled tasks with ordered steps) and personal todos. The real focus is the infrastructure beneath it — reliable message delivery, per-tenant isolation, crash-safe scheduling, and a clean architecture that two different hosts share without duplicating business logic.
+The domain: a platform for managing automated background jobs (scheduled tasks with ordered steps). The real focus is the infrastructure beneath it — reliable message delivery, per-tenant isolation, crash-safe scheduling, and a clean architecture that two different hosts share without duplicating business logic.
 
 ---
 
@@ -196,7 +196,5 @@ Tenant is resolved from the `X-Tenant-Id` header.
 Interactive docs available at `/scalar/v1` when running locally.
 
 **Jobs** — `POST /jobs` · `GET /jobs/{id}` · schedules CRUD + bulk · steps CRUD + bulk + reorder
-
-**Todos** — `POST /todos` · `GET /todos` · `GET /todos/{id}` · `PUT /todos/{id}/complete` · `DELETE /todos/{id}`
 
 **Users** — `POST /users/register` · `POST /users/login` · `GET /users/{id}`
