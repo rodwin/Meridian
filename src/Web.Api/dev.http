@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:5000
 @tenantId = tenant-a
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkZXZlbG9wZXJzIiwiaXNzIjoiY2xlYW4tYXJjaGl0ZWN0dXJlIiwiZXhwIjoxNzc0MjY0MDM3LCJzdWIiOiIxNzAwZjc0NS1jMTM2LTRiNDUtYmFlOS1lNTA1ZGJmZTU2N2UiLCJlbWFpbCI6ImpvaG44MTQuZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzc0MjYwNDM3LCJuYmYiOjE3NzQyNjA0Mzd9.sd5WvScYtmy0Qp3X192VbbPW8O_l4De_ngWCRc963w8
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkZXZlbG9wZXJzIiwiaXNzIjoiY2xlYW4tYXJjaGl0ZWN0dXJlIiwiZXhwIjoxNzc0NDIxMzM5LCJzdWIiOiIwMTlkMjM4NS1iYTlmLTcxMzYtYTc3My02NDUyZDAxMjFiMGIiLCJlbWFpbCI6ImpvaG44MTQuZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzc0NDE3NzQwLCJuYmYiOjE3NzQ0MTc3NDB9.FE8mJ00UVtJZvHh8E5Em7V7rj2uEtPNsBtV_s5U2hqM
 @guid = BE9EC751-F085-432C-9C3F-C127987A37AB
 
 ### Register user
@@ -25,7 +25,7 @@ X-Tenant-Id: {{tenantId}}
   "password": "Password123!"
 }
 
-### Get user by id (requires Bearer token from login response)
+### Get user by id — response: { "data": { "id": "...", "email": "...", "rowVersion": "..." } }
 GET {{baseUrl}}/api/users/{{$guid}}
 Authorization: Bearer {{token}}
 X-Tenant-Id: {{tenantId}}
@@ -44,12 +44,12 @@ X-Tenant-Id: {{tenantId}}
   "priority": 1
 }
 
-### Get all todos
+### Get all todos — response: { "data": [ { "id": "...", ... }, ... ] }
 GET {{baseUrl}}/api/todos
 Authorization: Bearer {{token}}
 X-Tenant-Id: {{tenantId}}
 
-### Get todo by id
+### Get todo by id — response: { "data": { "id": "...", "description": "...", "rowVersion": "..." } }
 GET {{baseUrl}}/api/todos/{{$guid}}
 Authorization: Bearer {{token}}
 X-Tenant-Id: {{tenantId}}
@@ -92,18 +92,18 @@ X-Tenant-Id: {{tenantId}}
 
 ###
 
-@jobId = 019D19DF-5723-7986-A133-1E2043ECA08E
+@jobId = 019D2386-2876-78C5-848A-D6F043D9F0F6
 
-### Get job (includes schedules and steps with rowVersion)
+### Get job — response: { "data": { "id": "...", "schedules": [...], "steps": [...] } }
 GET {{baseUrl}}/api/jobs/{{jobId}}
 Authorization: Bearer {{token}}
 X-Tenant-Id: {{tenantId}}
 
-@scheduleId1 = 019D19DF-5724-7C13-A958-D60DEE779BB8
+@scheduleId1 = 019d2386-2877-75e7-888f-eeb6b75b791d
 @scheduleId2 = 00000000-0000-0000-0000-000000000000
 @scheduleRowVersion1 = AAAAAAAAw38=
 
-### Get schedules
+### Get schedules — response: { "data": [ { "id": "...", "name": "...", "rowVersion": "..." }, ... ] }
 GET {{baseUrl}}/api/jobs/{{jobId}}/schedules
 Authorization: Bearer {{token}}
 X-Tenant-Id: {{tenantId}}
@@ -152,8 +152,8 @@ X-Tenant-Id: {{tenantId}}
 
 [
   {
-    "scheduleId": "{{scheduleId1}}",
-    "rowVersion": "AAAAAAAAw38="
+    "scheduleId": "019d2386-2877-75e7-888f-eeb6b75b791d",
+    "rowVersion": "AAAAAAAAB9M="
   }
 ]
 
