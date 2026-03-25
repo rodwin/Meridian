@@ -6,7 +6,7 @@ using SharedKernel;
 
 namespace Application.Jobs.Run;
 
-internal sealed class RunJobCommandHandler(
+internal sealed partial class RunJobCommandHandler(
     IApplicationDbContext context,
     ILogger<RunJobCommandHandler> logger) : ICommandHandler<RunJobCommand>
 {
@@ -19,21 +19,18 @@ internal sealed class RunJobCommandHandler(
 
         if (job is null)
         {
-            logger.LogWarning(
-                "Job {JobId} not found — scheduled trigger from schedule {ScheduleId} will be dropped",
-                command.JobId,
-                command.ScheduleId);
-
+            LogJobNotFound(logger, command.JobId, command.ScheduleId);
             return Result.Failure(Domain.Jobs.JobErrors.NotFound(command.JobId));
         }
 
-        logger.LogInformation(
-            "Running job '{JobName}' ({JobId}) triggered by schedule {ScheduleId} with {StepCount} step(s)",
-            job.Name,
-            command.JobId,
-            command.ScheduleId,
-            job.Steps.Count);
+        LogRunningJob(logger, job.Name, command.JobId, command.ScheduleId, job.Steps.Count);
 
         return Result.Success();
     }
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Job {JobId} not found — scheduled trigger from schedule {ScheduleId} will be dropped")]
+    private static partial void LogJobNotFound(ILogger logger, Guid jobId, Guid scheduleId);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Running job '{JobName}' ({JobId}) triggered by schedule {ScheduleId} with {StepCount} step(s)")]
+    private static partial void LogRunningJob(ILogger logger, string jobName, Guid jobId, Guid scheduleId, int stepCount);
 }

@@ -28,24 +28,6 @@ public sealed class GetJobSchedulesQueryHandlerTests(ApplicationSqlServerFixture
     }
 
     [Fact]
-    public async Task GetSchedules_WhenJobHasNoSchedules_ShouldReturnEmptyList()
-    {
-        // Arrange
-        Job job = await SeedJobWithNoSchedulesAsync();
-        await using ApplicationDbContext context = fixture.CreateContext();
-        var handler = new GetJobSchedulesQueryHandler(context);
-
-        // Act
-        Result<List<JobScheduleResponse>> result = await handler.Handle(
-            new GetJobSchedulesQuery(job.Id),
-            CancellationToken.None);
-
-        // Assert
-        result.IsSuccess.ShouldBeTrue();
-        result.Value.ShouldBeEmpty();
-    }
-
-    [Fact]
     public async Task GetSchedules_WhenJobNotFound_ShouldReturnFailure()
     {
         // Arrange

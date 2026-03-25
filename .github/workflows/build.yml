@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  DOTNET_VERSION: "9.x"
+  DOTNET_VERSION: "10.x"
 
 jobs:
   build:
@@ -22,13 +22,13 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
-        run: dotnet restore CleanArchitecture.sln
+        run: dotnet restore Meridian.sln
 
       - name: Build
-        run: dotnet build CleanArchitecture.sln --configuration Release --no-restore
+        run: dotnet build Meridian.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test CleanArchitecture.sln --configuration Release --no-restore --no-build
+        run: dotnet test Meridian.sln --configuration Release --no-restore --no-build
 
       - name: Publish
-        run: dotnet publish CleanArchitecture.sln --configuration Release --no-restore --no-build
+        run: dotnet publish Meridian.sln --configuration Release --no-restore --no-build

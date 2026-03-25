@@ -420,3 +420,6 @@ dotnet_diagnostic.S6781.severity = none
 
 # S6966: Awaitable method should be used
 dotnet_diagnostic.S6966.severity = none
+
+[*.{cs,vb}]
+dotnet_diagnostic.CA1873.severity = none
