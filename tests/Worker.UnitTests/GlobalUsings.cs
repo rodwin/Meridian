@@ -1,0 +1,14 @@
+global using Application.Abstractions.Scheduling;
+global using Infrastructure.DomainEvents;
+global using Infrastructure.Outbox;
+global using Infrastructure.Tenancy;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging.Abstractions;
+global using NSubstitute;
+global using NSubstitute.ExceptionExtensions;
+global using Quartz;
+global using Quartz.Impl.Matchers;
+global using Shouldly;
+global using Worker.Messaging;
+global using Worker.Scheduling;
+global using Xunit;

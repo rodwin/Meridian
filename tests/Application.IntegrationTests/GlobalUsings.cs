@@ -1,0 +1,10 @@
+global using Application.Abstractions.Scheduling;
+global using Application.IntegrationTests.Fixtures;
+global using Domain.Jobs;
+global using Infrastructure.Authentication;
+global using Infrastructure.Database;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Migrations;
+global using SharedKernel;
+global using Shouldly;
+global using Xunit;

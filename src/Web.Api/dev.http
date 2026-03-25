@@ -1,0 +1,218 @@
+@baseUrl = http://localhost:5000
+@tenantId = tenant-a
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJkZXZlbG9wZXJzIiwiaXNzIjoiY2xlYW4tYXJjaGl0ZWN0dXJlIiwiZXhwIjoxNzc0MjY0MDM3LCJzdWIiOiIxNzAwZjc0NS1jMTM2LTRiNDUtYmFlOS1lNTA1ZGJmZTU2N2UiLCJlbWFpbCI6ImpvaG44MTQuZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzc0MjYwNDM3LCJuYmYiOjE3NzQyNjA0Mzd9.sd5WvScYtmy0Qp3X192VbbPW8O_l4De_ngWCRc963w8
+@guid = BE9EC751-F085-432C-9C3F-C127987A37AB
+
+### Register user
+POST {{baseUrl}}/api/users/register
+Content-Type: application/json
+X-Tenant-Id: {{tenantId}}
+
+{
+  "email": "john814.doe@example.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "password": "Password123!"
+}
+
+### Login
+POST {{baseUrl}}/api/users/login
+Content-Type: application/json
+X-Tenant-Id: {{tenantId}}
+
+{
+  "email": "john814.doe@example.com",
+  "password": "Password123!"
+}
+
+### Get user by id (requires Bearer token from login response)
+GET {{baseUrl}}/api/users/{{$guid}}
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Create todo
+POST {{baseUrl}}/api/todos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+{
+  "userId": "{{$guid}}",
+  "description": "Buy groceries",
+  "dueDate": "2026-03-20T00:00:00Z",
+  "labels": ["personal", "errands"],
+  "priority": 1
+}
+
+### Get all todos
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Get todo by id
+GET {{baseUrl}}/api/todos/{{$guid}}
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Complete todo
+PUT {{baseUrl}}/api/todos/{{$guid}}/complete
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Delete todo
+DELETE {{baseUrl}}/api/todos/{{$guid}}
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Create job
+POST {{baseUrl}}/api/jobs
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+{
+  "name": "Daily Database Load",
+  "description": "Runs the nightly database load process",
+  "steps": [
+    {
+      "name": "Run DB Load",
+      "stepType": "RunDatabaseLoad",
+      "parameters": null,
+      "onFailure": 0
+    }
+  ],
+  "schedules": [
+    {
+      "name": "Every day at 10am",
+      "cronExpression": "0,20 0 0 ? * * *",
+      "timeZoneId": "UTC"
+    }
+  ]
+}
+
+###
+
+@jobId = 019D19DF-5723-7986-A133-1E2043ECA08E
+
+### Get job (includes schedules and steps with rowVersion)
+GET {{baseUrl}}/api/jobs/{{jobId}}
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+@scheduleId1 = 019D19DF-5724-7C13-A958-D60DEE779BB8
+@scheduleId2 = 00000000-0000-0000-0000-000000000000
+@scheduleRowVersion1 = AAAAAAAAw38=
+
+### Get schedules
+GET {{baseUrl}}/api/jobs/{{jobId}}/schedules
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+### Bulk add schedules (partial-success)
+POST {{baseUrl}}/api/jobs/{{jobId}}/schedules/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  {
+    "name": "Daily 10am",
+    "cronExpression": "0 0 10 * * ?",
+    "timeZoneId": "UTC"
+  },
+  {
+    "name": "Weekly Monday",
+    "cronExpression": "0 0 8 ? * MON",
+    "timeZoneId": "UTC"
+  }
+]
+
+### Bulk update schedules (partial-success)
+PUT {{baseUrl}}/api/jobs/{{jobId}}/schedules/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  {
+    "scheduleId": "{{scheduleId1}}",
+    "name": "Updated Daily",
+    "cronExpression": "0 0 12 ? * *",
+    "timeZoneId": "UTC",
+    "isEnabled": true,
+    "rowVersion": "{{scheduleRowVersion1}}"
+  }
+]
+
+### Bulk delete schedules (partial-success)
+DELETE {{baseUrl}}/api/jobs/{{jobId}}/schedules/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  {
+    "scheduleId": "{{scheduleId1}}",
+    "rowVersion": "AAAAAAAAw38="
+  }
+]
+
+### Bulk add steps (partial-success)
+POST {{baseUrl}}/api/jobs/{{jobId}}/steps/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  {
+    "name": "Run DB Load",
+    "stepType": "RunDatabaseLoad",
+    "parameters": null,
+    "onFailure": 0
+  },
+  {
+    "name": "Send Notification",
+    "stepType": "SendEmail",
+    "parameters": "{\"to\":\"admin@example.com\"}",
+    "onFailure": 1
+  }
+]
+
+### Bulk update steps (partial-success)
+PUT {{baseUrl}}/api/jobs/{{jobId}}/steps/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  {
+    "stepId": "00000000-0000-0000-0000-000000000000",
+    "name": "Updated Step",
+    "stepType": "RunDatabaseLoad",
+    "parameters": null,
+    "onFailure": 0,
+    "isEnabled": true
+  }
+]
+
+### Reorder steps
+PUT {{baseUrl}}/api/jobs/{{jobId}}/steps/reorder
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  "00000000-0000-0000-0000-000000000003",
+  "00000000-0000-0000-0000-000000000001",
+  "00000000-0000-0000-0000-000000000002"
+]
+
+### Bulk delete steps (partial-success)
+DELETE {{baseUrl}}/api/jobs/{{jobId}}/steps/bulk
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-Tenant-Id: {{tenantId}}
+
+[
+  "00000000-0000-0000-0000-000000000000"
+]
