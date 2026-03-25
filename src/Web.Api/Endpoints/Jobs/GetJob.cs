@@ -17,7 +17,7 @@ internal sealed class GetJob : IEndpoint
         {
             Result<JobResponse> result = await handler.Handle(new GetJobQuery(id), cancellationToken);
 
-            return result.Match(Results.Ok, CustomResults.Problem);
+            return result.Match(CustomResults.OkEnvelope, CustomResults.Problem);
         })
         .WithTags(Tags.Jobs)
         .RequireAuthorization();

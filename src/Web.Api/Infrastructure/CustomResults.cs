@@ -4,6 +4,8 @@ namespace Web.Api.Infrastructure;
 
 public static class CustomResults
 {
+    public static IResult OkEnvelope<T>(T value) => Results.Ok(new ApiResponse<T>(value));
+
     public static IResult Problem(Result result)
     {
         if (result.IsSuccess)

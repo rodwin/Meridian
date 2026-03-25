@@ -19,7 +19,7 @@ internal sealed class GetById : IEndpoint
 
             Result<TodoResponse> result = await handler.Handle(command, cancellationToken);
 
-            return result.Match(Results.Ok, CustomResults.Problem);
+            return result.Match(CustomResults.OkEnvelope, CustomResults.Problem);
         })
         .WithTags(Tags.Todos)
         .RequireAuthorization();

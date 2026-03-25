@@ -18,7 +18,7 @@ internal sealed class GetSchedules : IEndpoint
         {
             Result<List<JobScheduleResponse>> result = await handler.Handle(new GetJobSchedulesQuery(jobId), cancellationToken);
 
-            return result.Match(Results.Ok, CustomResults.Problem);
+            return result.Match(CustomResults.OkEnvelope, CustomResults.Problem);
         })
         .WithTags(Tags.Jobs)
         .RequireAuthorization();
